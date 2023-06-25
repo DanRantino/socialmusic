@@ -19,8 +19,10 @@ export default function RootLayout({
 		<html lang="en">
 			<body className={inter.className}>
 				<AuthSession>
-					<NavBar />
-					{children}
+					<main>
+						<NavBar />
+						<div className="h-full w-screen pt-24">{children}</div>
+					</main>
 				</AuthSession>
 			</body>
 		</html>

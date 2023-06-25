@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import Image from 'next/image';
 
 type Props = {
 	image: string | null | undefined;
 };
 
-const Avatar = ({ image }: Props) => {
+const Avatar = ({ image }: PropsWithChildren<Props>) => {
 	return (
 		<button className=" avatar rounded-full">
 			<div className="w-12 rounded-full cursor-pointer">

@@ -1,38 +1,35 @@
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+'use client';
+import Link from 'next/link';
+import { PropsWithChildren } from 'react';
+import * as D from '@radix-ui/react-dropdown-menu';
+import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+import Avatar from '../avatar';
+import { Dropdown } from '@nextui-org/react';
 
-export default () => (
-	<DropdownMenu.Root>
-		<DropdownMenu.Trigger />
+type Props = {
+	items: Array<{ href: string; label: string }>;
+};
 
-		<DropdownMenu.Portal>
-			<DropdownMenu.Content>
-				<DropdownMenu.Label />
-				<DropdownMenu.Item />
+export default function DropdownMenu({
+	children,
+	items,
+}: PropsWithChildren<Props>) {
+	const path = usePathname();
+	const { data } = useSession();
 
-				<DropdownMenu.Group>
-					<DropdownMenu.Item />
-				</DropdownMenu.Group>
-
-				<DropdownMenu.CheckboxItem>
-					<DropdownMenu.ItemIndicator />
-				</DropdownMenu.CheckboxItem>
-
-				<DropdownMenu.RadioGroup>
-					<DropdownMenu.RadioItem>
-						<DropdownMenu.ItemIndicator />
-					</DropdownMenu.RadioItem>
-				</DropdownMenu.RadioGroup>
-
-				<DropdownMenu.Sub>
-					<DropdownMenu.SubTrigger />
-					<DropdownMenu.Portal>
-						<DropdownMenu.SubContent />
-					</DropdownMenu.Portal>
-				</DropdownMenu.Sub>
-
-				<DropdownMenu.Separator />
-				<DropdownMenu.Arrow />
-			</DropdownMenu.Content>
-		</DropdownMenu.Portal>
-	</DropdownMenu.Root>
-);
+	return (
+		<Dropdown>
+			<Dropdown.Button flat>Trigger</Dropdown.Button>
+			<Dropdown.Menu aria-label="Static Actions">
+				<Dropdown.Item key="new">New file</Dropdown.Item>
+				<Dropdown.Item key="copy">Copy link</Dropdown.Item>
+				<Dropdown.Item key="edit">Edit file</Dropdown.Item>
+				<Dropdown.Item key="delete" color="error">
+					Delete file
+				</Dropdown.Item>
+			</Dropdown.Menu>
+		</Dropdown>
+	);+
+}
