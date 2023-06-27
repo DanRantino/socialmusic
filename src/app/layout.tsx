@@ -5,6 +5,7 @@ import { Inter } from 'next/font/google';
 import AuthSession from '@/components/auth/AuthSession';
 import { NextUIProvider, createTheme } from '@nextui-org/react';
 import { Layout } from '@/components/layout';
+import Providers from '@/providers';
 const myDarkTheme = createTheme({
 	type: 'dark',
 });
@@ -25,12 +26,14 @@ export default function RootLayout({
 			<body className={inter.className}>
 				<NextUIProvider theme={myDarkTheme}>
 					<AuthSession>
-						<main className="absolute top-0 left-0 bg-base-100">
-							<Layout>
-								<NavBar />
-								<div className="h-full w-screen pt-20">{children}</div>
-							</Layout>
-						</main>
+						<Providers>
+							<main className="absolute top-0 left-0 bg-base-100">
+								<Layout>
+									<NavBar />
+									<div className="h-full w-screen pt-20">{children}</div>
+								</Layout>
+							</main>
+						</Providers>
 					</AuthSession>
 				</NextUIProvider>
 			</body>

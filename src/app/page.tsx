@@ -1,15 +1,17 @@
 'use client';
 
-import getUser from '../server/actions/user';
+import { getUser, getFollowers } from '../server/actions/user';
 import { useEffect, useState } from 'react';
 import { User } from '@prisma/client';
+import { useQuery } from '@tanstack/react-query';
 
 export default function Home() {
-	const [dados, setDados] = useState<User | null>();
+	const { data: user } = useQuery(['user'], () => getUser());
 
-	useEffect(() => {
-		getUser().then(setDados);
-	}, []);
+	const { data: follow } = useQuery(['follow'], () => {
+		if (!user) return null;
+		return getFollowers(user.id);
+	});
 
-	return <div className="bg-base-100">{JSON.stringify(dados)}</div>;
+	return <div className="bg-base-100">{JSON.stringify(follow?.follow)}</div>;
 }

@@ -21,19 +21,9 @@ const NavBar = (props: Props) => {
 	useEffect(() => {
 		setAvatarData(data);
 	}, []);
-	const collapseItems = [
-		'Features',
-		'Customers',
-		'Pricing',
-		'Company',
-		'Legal',
-		'Team',
-		'Help & Feedback',
-		'Login',
-		'Sign Up',
-	];
+	const collapseItems = ['Perfis', 'Tarefas', 'Mensagens', 'Log Out'];
 	return (
-		<Navbar isBordered variant="sticky">
+		<Navbar isBordered variant="floating">
 			<Navbar.Toggle showIn="xs" />
 			<Navbar.Brand
 				css={{
@@ -43,7 +33,7 @@ const NavBar = (props: Props) => {
 				}}
 			>
 				<Text b color="inherit" hideIn="xs">
-					ACME
+					Sound Sync
 				</Text>
 			</Navbar.Brand>
 			<Navbar.Content
@@ -53,11 +43,11 @@ const NavBar = (props: Props) => {
 				variant="highlight-rounded"
 			>
 				<Navbar.Link isActive href="#">
-					Home
+					Início
 				</Navbar.Link>
-				<Navbar.Link href="#">Customers</Navbar.Link>
-				<Navbar.Link href="#">Pricing</Navbar.Link>
-				<Navbar.Link href="#">Company</Navbar.Link>
+				<Navbar.Link href="/perfil">Perfis</Navbar.Link>
+				<Navbar.Link href="/tarefa">Tarefas</Navbar.Link>
+				<Navbar.Link href="/mensagens">Mensagens</Navbar.Link>
 			</Navbar.Content>
 			<Navbar.Content
 				css={{

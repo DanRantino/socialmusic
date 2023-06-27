@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
+    provider        = "prisma-client-js"
     previewFeatures = ["jsonProtocol"]
 }
 
@@ -56,6 +56,29 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
+    follows       Follower? @relation("User")
+    followId      String?
+    Follow        Follower? @relation(fields: [followId], references: [id])
+    posts         Post[]    @relation("Likes")
+    Post          Post?
+    postId        String?
+}
+
+model Post {
+    id        String   @id @default(cuid())
+    content   String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    author    User     @relation(fields: [authorId], references: [id])
+    authorId  String   @unique
+    likes     User[]   @relation("Likes")
+}
+
+model Follower {
+    id     String @id @default(cuid())
+    userId String @unique
+    user   User   @relation("User", fields: [userId], references: [id])
+    follow User[]
 }
 
 model VerificationToken {
