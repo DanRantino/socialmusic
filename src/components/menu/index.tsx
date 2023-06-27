@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import Avatar from '../avatar';
 import { Dropdown } from '@nextui-org/react';
+import { GiHamburgerMenu } from 'react-icons/gi';
 
 type Props = {
 	items: Array<{ href: string; label: string }>;
@@ -21,15 +22,29 @@ export default function DropdownMenu({
 
 	return (
 		<Dropdown>
-			<Dropdown.Button flat>Trigger</Dropdown.Button>
+			<Dropdown.Button
+				auto
+				rounded
+				icon={<GiHamburgerMenu size={25} />}
+				size={'md'}
+				className="flex items-center justify-center"
+			></Dropdown.Button>
 			<Dropdown.Menu aria-label="Static Actions">
-				<Dropdown.Item key="new">New file</Dropdown.Item>
-				<Dropdown.Item key="copy">Copy link</Dropdown.Item>
-				<Dropdown.Item key="edit">Edit file</Dropdown.Item>
-				<Dropdown.Item key="delete" color="error">
-					Delete file
-				</Dropdown.Item>
+				{items.map((v, i) => {
+					if (v.href === path) {
+						return (
+							<Dropdown.Item color="secondary" key={i}>
+								<Link href={v.href}>{v.label}</Link>
+							</Dropdown.Item>
+						);
+					}
+					return (
+						<Dropdown.Item key={i}>
+							<Link href={v.href}>{v.label}</Link>
+						</Dropdown.Item>
+					);
+				})}
 			</Dropdown.Menu>
 		</Dropdown>
-	);+
+	);
 }

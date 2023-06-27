@@ -2,10 +2,16 @@
 
 import { useSession, signIn, signOut } from 'next-auth/react';
 import { Suspense, useEffect, useState } from 'react';
-import Avatar from '../avatar';
 import DropdownMenu from '../menu';
 import { Session } from 'next-auth';
-
+import {
+	Button,
+	Navbar,
+	Text,
+	Link,
+	Dropdown,
+	Avatar,
+} from '@nextui-org/react';
 type Props = {};
 
 const NavBar = (props: Props) => {
@@ -15,20 +21,145 @@ const NavBar = (props: Props) => {
 	useEffect(() => {
 		setAvatarData(data);
 	}, []);
-
+	const collapseItems = [
+		'Features',
+		'Customers',
+		'Pricing',
+		'Company',
+		'Legal',
+		'Team',
+		'Help & Feedback',
+		'Login',
+		'Sign Up',
+	];
 	return (
-		<div className="absolute top-0 right-0 bg-secondary shadow-2xl w-screen h-24 grid grid-cols-12">
-			<div className=" col-span-1 col-span flex items-center justify-center">
-				<DropdownMenu
-					items={[
-						{ href: '/', label: 'Home' },
-						{ href: '/teste', label: 'Teste' },
-					]}
-				>
-					<Avatar image={data?.user?.image} />
-				</DropdownMenu>
-			</div>
-		</div>
+		<Navbar isBordered variant="sticky">
+			<Navbar.Toggle showIn="xs" />
+			<Navbar.Brand
+				css={{
+					'@xs': {
+						w: '12%',
+					},
+				}}
+			>
+				<Text b color="inherit" hideIn="xs">
+					ACME
+				</Text>
+			</Navbar.Brand>
+			<Navbar.Content
+				enableCursorHighlight
+				activeColor="secondary"
+				hideIn="xs"
+				variant="highlight-rounded"
+			>
+				<Navbar.Link isActive href="#">
+					Home
+				</Navbar.Link>
+				<Navbar.Link href="#">Customers</Navbar.Link>
+				<Navbar.Link href="#">Pricing</Navbar.Link>
+				<Navbar.Link href="#">Company</Navbar.Link>
+			</Navbar.Content>
+			<Navbar.Content
+				css={{
+					'@xs': {
+						w: '12%',
+						jc: 'flex-end',
+					},
+				}}
+			>
+				<Dropdown placement="bottom-right">
+					<Navbar.Item>
+						<Dropdown.Trigger>
+							<Avatar
+								bordered
+								as="button"
+								color="secondary"
+								size="md"
+								src={data?.user?.image || ''}
+							/>
+						</Dropdown.Trigger>
+					</Navbar.Item>
+					<Dropdown.Menu
+						aria-label="User menu actions"
+						color="secondary"
+						onAction={(actionKey) => {
+							switch (actionKey) {
+								case 'logout':
+									signOut();
+									break;
+								default:
+									console.log(actionKey);
+							}
+						}}
+					>
+						<Dropdown.Item
+							key="profile"
+							css={{ height: '$18' }}
+							textValue="Signed in as"
+						>
+							<Text b color="inherit" css={{ d: 'flex' }}>
+								Signed in as
+							</Text>
+							<Text b color="inherit" css={{ d: 'flex' }}>
+								{data?.user?.name}
+							</Text>
+						</Dropdown.Item>
+						<Dropdown.Item key="settings" textValue="My Settings" withDivider>
+							My Settings
+						</Dropdown.Item>
+						<Dropdown.Item key="team_settings" textValue="Team Settings">
+							Team Settings
+						</Dropdown.Item>
+						<Dropdown.Item key="analytics" textValue="Analytics" withDivider>
+							Analytics
+						</Dropdown.Item>
+						<Dropdown.Item key="system" textValue="System">
+							System
+						</Dropdown.Item>
+						<Dropdown.Item key="configurations" textValue="Configurations">
+							Configurations
+						</Dropdown.Item>
+						<Dropdown.Item
+							key="help_and_feedback"
+							textValue="Help & Feedback"
+							withDivider
+						>
+							Help & Feedback
+						</Dropdown.Item>
+						<Dropdown.Item
+							key="logout"
+							withDivider
+							color="error"
+							textValue="Log Out"
+						>
+							Log Out
+						</Dropdown.Item>
+					</Dropdown.Menu>
+				</Dropdown>
+			</Navbar.Content>
+			<Navbar.Collapse>
+				{collapseItems.map((item, index) => (
+					<Navbar.CollapseItem
+						key={item}
+						activeColor="secondary"
+						css={{
+							color: index === collapseItems.length - 1 ? '$error' : '',
+						}}
+						isActive={index === 2}
+					>
+						<Link
+							color="inherit"
+							css={{
+								minWidth: '100%',
+							}}
+							href="#"
+						>
+							{item}
+						</Link>
+					</Navbar.CollapseItem>
+				))}
+			</Navbar.Collapse>
+		</Navbar>
 	);
 };
 

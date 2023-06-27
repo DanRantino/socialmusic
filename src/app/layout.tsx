@@ -1,8 +1,13 @@
+'use client';
 import NavBar from '@/components/NavBar';
 import './globals.css';
 import { Inter } from 'next/font/google';
 import AuthSession from '@/components/auth/AuthSession';
-
+import { NextUIProvider, createTheme } from '@nextui-org/react';
+import { Layout } from '@/components/layout';
+const myDarkTheme = createTheme({
+	type: 'dark',
+});
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
@@ -18,12 +23,16 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={inter.className}>
-				<AuthSession>
-					<main>
-						<NavBar />
-						<div className="h-full w-screen pt-24">{children}</div>
-					</main>
-				</AuthSession>
+				<NextUIProvider theme={myDarkTheme}>
+					<AuthSession>
+						<main className="absolute top-0 left-0 bg-base-100">
+							<Layout>
+								<NavBar />
+								<div className="h-full w-screen pt-20">{children}</div>
+							</Layout>
+						</main>
+					</AuthSession>
+				</NextUIProvider>
 			</body>
 		</html>
 	);
