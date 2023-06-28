@@ -6,7 +6,6 @@ export async function getUser() {
 }
 
 export async function getFollowers(userId: string) {
-	console.log('🚀 ~ file: user.ts:9 ~ getFollowers ~ userId:', userId);
 	return await prisma.follower.findUnique({
 		where: {
 			userId,

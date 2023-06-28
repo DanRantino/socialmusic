@@ -6,6 +6,8 @@ import AuthSession from '@/components/auth/AuthSession';
 import { NextUIProvider, createTheme } from '@nextui-org/react';
 import { Layout } from '@/components/layout';
 import Providers from '@/providers';
+import Page from '@/components/page';
+import { GlobalModal } from '@/context/GlobalModal';
 const myDarkTheme = createTheme({
 	type: 'dark',
 });
@@ -27,12 +29,14 @@ export default function RootLayout({
 				<NextUIProvider theme={myDarkTheme}>
 					<AuthSession>
 						<Providers>
-							<main className="absolute top-0 left-0 bg-base-100">
-								<Layout>
-									<NavBar />
-									<div className="h-full w-screen pt-20">{children}</div>
-								</Layout>
-							</main>
+							<Page>
+								<GlobalModal>
+									<Layout>
+										<NavBar />
+										<div className="h-full w-screen pt-20">{children}</div>
+									</Layout>
+								</GlobalModal>
+							</Page>
 						</Providers>
 					</AuthSession>
 				</NextUIProvider>
