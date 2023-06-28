@@ -48,7 +48,7 @@ export default function Home() {
 								)
 							}
 						>
-							<Loading type="points" color="currentColor" size="sm" />
+							Salvar
 						</Button>
 					);
 					setVisible(!visible);

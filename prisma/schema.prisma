@@ -1,21 +1,20 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["jsonProtocol"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model Example {
-  id        String   @id @default(cuid())
+  id        String   @id @map("_id")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Account {
-  id                String  @id @default(cuid())
+  id                String  @id @map("_id")
   userId            String
   type              String
   provider          String
@@ -33,7 +32,7 @@ model Account {
 }
 
 model Session {
-  id           String   @id @default(cuid())
+  id           String   @id @map("_id")
   sessionToken String   @unique
   userId       String
   expires      DateTime
@@ -41,7 +40,7 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String    @id @map("_id")
   name          String?
   email         String?   @unique
   emailVerified DateTime?
@@ -53,22 +52,24 @@ model User {
   Post          Post?
   sessions      Session[]
   assignedTasks Task[]    @relation("UserAssignedTasks")
-  Follow        Follower? @relation(fields: [followId], references: [id])
-  posts         Post[]    @relation("Likes")
+  Follow        Follower? @relation(fields: [followId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  likeIds       String[]
+  posts         Post[]    @relation("Likes", references: [id], fields: [likeIds])
 }
 
 model Post {
-  id        String   @id @default(cuid())
+  id        String   @id @map("_id")
   content   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   authorId  String   @unique
   author    User     @relation(fields: [authorId], references: [id])
-  likes     User[]   @relation("Likes")
+  likes     User[]   @relation("Likes", fields: [likeId], references: [id])
+  likeId    String[] @unique
 }
 
 model Task {
-  id           String   @id @default(cuid())
+  id           String   @id @map("_id")
   title        String
   content      String
   createdAt    DateTime @default(now())
@@ -76,18 +77,18 @@ model Task {
   completed    Boolean  @default(false)
   assignedToId String
   userId       String
-  assignedTo   User     @relation("UserAssignedTasks", fields: [userId], references: [id])
+  assignedTo   User     @relation("UserAssignedTasks", fields: [assignedToId], references: [id])
 }
 
 model Follower {
-  id     String @id @default(cuid())
+  id     String @id @map("_id")
   userId String @unique
   user   User   @relation("User", fields: [userId], references: [id])
   follow User[]
 }
 
 model VerificationToken {
-  identifier String
+  identifier String   @id @map("_id")
   token      String   @unique
   expires    DateTime
 
